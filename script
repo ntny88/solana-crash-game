@@ -1,0 +1,59 @@
+const multiplierDisplay = document.getElementById("multiplier");
+const connectWalletBtn = document.getElementById("connectWallet");
+const cashOutBtn = document.getElementById("cashOut");
+
+let multiplier = 1.0;
+let running = false;
+let interval;
+let provider = null;
+
+async function connectWallet() {
+  if ("solana" in window) {
+    provider = window.solana;
+    try {
+      const resp = await provider.connect();
+      console.log("Connected to wallet: ", resp.publicKey.toString());
+      connectWalletBtn.innerText = "Wallet Connected";
+      startGame();
+    } catch (err) {
+      console.error("Wallet connection failed", err);
+    }
+  } else {
+    alert("Phantom wallet not found. Please install it.");
+  }
+}
+
+function startGame() {
+  multiplier = 1.0;
+  running = true;
+  cashOutBtn.disabled = false;
+  interval = setInterval(() => {
+    multiplier += 0.01;
+    multiplierDisplay.innerText = multiplier.toFixed(2) + "x";
+
+    // Simulate crash randomly
+    if (Math.random() < 0.005 * multiplier) {
+      endGame(false);
+    }
+  }, 100);
+}
+
+function endGame(cashedOut) {
+  running = false;
+  clearInterval(interval);
+  if (cashedOut) {
+    alert("You cashed out at " + multiplier.toFixed(2) + "x!");
+  } else {
+    alert("Game crashed at " + multiplier.toFixed(2) + "x!");
+  }
+  cashOutBtn.disabled = true;
+  connectWalletBtn.innerText = "Play Again";
+}
+
+cashOutBtn.addEventListener("click", () => {
+  if (running) {
+    endGame(true);
+  }
+});
+
+connectWalletBtn.addEventListener("click", connectWallet);
