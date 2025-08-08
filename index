@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solana Crash Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Solana Crash Game</h1>
+  <p>Multiplier: <span id="multiplier">1.00x</span></p>
+  <button id="connectWallet">Connect Wallet</button>
+  <button id="cashOut" disabled>Cash Out</button>
+
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
